@@ -15,6 +15,7 @@ export class SearchResultsComponent {
 
   constructor(private readonly bookingService: BookingService) {}
 
+  
   averageRating(lodging: Lodging): boolean[] {
     const maxRating = 10;
     const stars = new Array<boolean>(maxRating);
