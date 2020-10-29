@@ -11,7 +11,7 @@ import { BookingService } from 'services/booking/booking.service';
   selector: 'uic-lodging-details',
   templateUrl: './lodging-details.component.html',
 })
-export class LodgingDetailsComponent implements OnInit {
+export class LodgingDetailsComponent implements OnInit { 
   /**
    * fields used in this component
    */
