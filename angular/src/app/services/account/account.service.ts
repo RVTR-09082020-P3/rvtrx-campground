@@ -37,10 +37,6 @@ export class AccountService {
     );
   }
 
-oktaToken(){
-
-}
-
 
 
   /**
