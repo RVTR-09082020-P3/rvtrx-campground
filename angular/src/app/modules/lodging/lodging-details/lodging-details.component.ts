@@ -6,6 +6,8 @@ import { Review } from 'data/review.model';
 import { Profile } from 'data/profile.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BookingService } from 'services/booking/booking.service';
+import { OktaAuthService } from '@okta/okta-angular';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'uic-lodging-details',
@@ -28,7 +30,8 @@ export class LodgingDetailsComponent implements OnInit {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly lodgingService: LodgingService,
-    private readonly bookingService: BookingService
+    private readonly bookingService: BookingService,
+    private readonly identity: OktaAuthService
   ) {
 
     this.Comment = new FormGroup({
@@ -45,6 +48,13 @@ export class LodgingDetailsComponent implements OnInit {
       familyName: "Ferri",
       phone: "111-111-1111"
     }
+
+    this.identity.getUser().then(p => {
+      this.profile.givenName = `${p.given_name!} ${p.family_name!}`;
+      console.log(p.given_name, p.family_name!);
+    })
+
+    
   }
 
   /**
