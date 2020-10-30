@@ -18,6 +18,10 @@ export class HomeComponent implements OnInit {
     this.isAuthenticated$ = from(this.identity.isAuthenticated());
   }
 
+  signUp(): void{
+    
+  }
+
   signIn(): void {
     this.identity.loginRedirect('/account');
   }

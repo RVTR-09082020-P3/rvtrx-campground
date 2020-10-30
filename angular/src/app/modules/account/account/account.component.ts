@@ -1,6 +1,7 @@
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
 import { Component, Inject } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { OktaAuthService } from '@okta/okta-angular';
 import { Account } from 'data/account.model';
 import { Address } from 'data/address.model';
@@ -30,8 +31,8 @@ export class AccountComponent {
   reviews$: Observable<Review[]>;
   private readonly id = '-1';
   accountId = this.id;
-  email : string;
-  name: string;
+//  email : string;
+//  name: string;
   
 
 
@@ -42,13 +43,21 @@ export class AccountComponent {
     @Inject(ACCOUNT_EDITING_SERVICE)
     editingService: GenericEditingService<Partial<Account>>
   ) {
-    this.email = 'beforepromise';
-    this.name = 'beforepromise';
+    //this.email = 'beforepromise';
+    //this.name = 'beforepromise';
     this.isAuthenticated$ = from(this.identity.isAuthenticated());
     this.identity.getUser().then((res) =>{
        
-        this.email = res.email as string;
-        this.name = res.name as string;
+      //  this.email = res.email as string;
+      //  this.name = res.name as string;
+        const builder: Partial<Account> = {};
+        builder.name = res.email as string;
+        builder.email = res.name as string;
+        const account: Account = builder as Account;
+        this.accountService.post(account).subscribe({
+          next: (e) => console.log(e),
+          error: (e) => console.error(e),
+        });
         
 
     }).catch((err) => {
@@ -57,15 +66,8 @@ export class AccountComponent {
 
       
 
-    this.account$ = this.accountService.getEmail(this.email) 
+    this.account$ = this.accountService.getEmail("test@Test.com"); 
  
-
-  
-   
- 
-    
-
-
 
 
     
