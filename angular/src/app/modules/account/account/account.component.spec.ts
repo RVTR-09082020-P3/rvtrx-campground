@@ -18,8 +18,31 @@ describe('AccountComponent', () => {
     get(): Observable<Account> {
       const account: Account = {
         id: '',
+        email: '',
+        name: '',
         address: {
           id: '',
+
+          city: '',
+          country: '',
+          postalCode: '',
+          stateProvince: '',
+          street: '',
+        },
+        payments: [],
+        profiles: [],
+      };
+      return of(account);
+    },
+
+    getEmail(): Observable<Account> {
+      const account: Account = {
+        id: '',
+        email: '',
+        name: '',
+        address: {
+          id: '',
+
           city: '',
           country: '',
           postalCode: '',
@@ -33,6 +56,10 @@ describe('AccountComponent', () => {
     },
     put(acct: Account): Observable<Account> {
       return of(acct);
+    },
+
+    getToken(): string {
+      return 'test';
     },
   };
 

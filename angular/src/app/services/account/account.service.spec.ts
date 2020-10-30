@@ -15,6 +15,8 @@ import { PostPayment } from 'src/app/data/payment.model';
 describe('AccountService', () => {
   const accountMock: Account = {
     id: '0',
+    email: 'test',
+    name: 'test',
     address: {
       id: 'string',
       city: 'string',
@@ -80,6 +82,13 @@ describe('AccountService', () => {
   let service: AccountService;
 
   beforeEach(() => {
+    const store: { [key: string]: string } = { test: 'test' };
+    const mockLocalStorage = {
+      getItem: (key: string): string | null => {
+        return key in store ? store[key] : null;
+      },
+    };
+    spyOn(Storage.prototype, 'getItem').and.callFake(mockLocalStorage.getItem);
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [{ provide: ConfigService, useValue: configServiceStub }],
@@ -92,6 +101,10 @@ describe('AccountService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('should return items from localstorage', () => {
+    expect(localStorage.getItem('test')).toBeTruthy();
   });
 
   it('should make httpDelete request', fakeAsync(() => {
