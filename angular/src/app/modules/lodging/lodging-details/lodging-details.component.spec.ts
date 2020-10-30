@@ -82,6 +82,17 @@ describe('LodgingDetailsComponent', () => {
   });
 
   /**
+   * tests the form control
+   */
+  // it('Submit button', () => {
+  //   spyOn(LodgingDetailsComponent, 'onSubmit');
+
+  //   let button = fixture.debugElement.nativeElement.querySelector('button');
+  //   button.click();
+  //   expect(component.OnSubmit).toHaveBeenCalled();
+  // });
+
+  /**
    * tests if the lodge details are returned correctly
    */
   it('should get lodging details', () => {
