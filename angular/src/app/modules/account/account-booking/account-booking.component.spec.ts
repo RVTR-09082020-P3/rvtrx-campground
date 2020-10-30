@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AccountBookingComponent } from './account-booking.component';
 import { Booking } from 'src/app/data/booking.model';
+import { LodgingService } from 'src/app/services/lodging/lodging.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+
 describe('AccountBookingComponent', () => {
   const booking: Booking = {
     id: 'string',
@@ -16,6 +19,8 @@ describe('AccountBookingComponent', () => {
         familyName: '',
         givenName: '',
         phone: 'string',
+        // Every guest's profile needs a profile picture to display
+        pfpUrl: 'string',
       },
     ],
     rentals: [
@@ -39,6 +44,8 @@ describe('AccountBookingComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [AccountBookingComponent],
+        imports: [HttpClientTestingModule],
+        providers: [LodgingService],
       }).compileComponents();
     })
   );

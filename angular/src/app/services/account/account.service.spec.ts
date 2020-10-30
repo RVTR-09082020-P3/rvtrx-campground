@@ -40,6 +40,7 @@ describe('AccountService', () => {
         familyName: 'string',
         givenName: 'string',
         phone: 'string',
+        pfpUrl: 'string',
       },
     ],
   };
