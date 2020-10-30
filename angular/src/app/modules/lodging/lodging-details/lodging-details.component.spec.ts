@@ -101,10 +101,8 @@ describe('LodgingDetailsComponent', () => {
       };
 
       const onSubmitStub = {
-        OnSubmit(): void {
-
-        },
-      }
+        OnSubmit(): void {},
+      };
 
       TestBed.configureTestingModule({
         declarations: [LodgingDetailsComponent],
@@ -140,9 +138,32 @@ describe('LodgingDetailsComponent', () => {
   });
 
   /**
+   * tests the HTML for the OnSubmit Button
+   */
+  it('OnSubmit Button should be pressed', () => {
+    spyOn(component, 'OnSubmit');
+
+    component.hasBooked = true;
+
+    const s = 'score';
+    const m = 'message';
+
+    const score = component.Comment.controls[s];
+    const message = component.Comment.controls[m];
+
+    score.setValue('1');
+    message.setValue('my message');
+
+    const button = fixture.debugElement.nativeElement.querySelector('button');
+    button.click();
+
+    expect(component.OnSubmit).toHaveBeenCalled();
+  });
+
+  /**
    * tests constructor values being initalized and if getBookingByAccountId works
    */
-  it('GetBookingByAccountId should be called', () => {   
+  it('GetBookingByAccountId should be called', () => {
     spyOn(component, 'getBookingByAccountId');
 
     expect(component.profile).toBeTruthy();
