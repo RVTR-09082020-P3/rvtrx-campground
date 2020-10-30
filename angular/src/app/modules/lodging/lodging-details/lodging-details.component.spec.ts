@@ -10,6 +10,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BookingService } from '../../../services/booking/booking.service';
 import { Review } from 'data/review.model';
 import { Booking } from 'data/booking.model';
+import { By } from '@angular/platform-browser';
 
 describe('LodgingDetailsComponent', () => {
   let component: LodgingDetailsComponent;
@@ -99,6 +100,12 @@ describe('LodgingDetailsComponent', () => {
         },
       };
 
+      const onSubmitStub = {
+        OnSubmit(): void {
+
+        },
+      }
+
       TestBed.configureTestingModule({
         declarations: [LodgingDetailsComponent],
         imports: [HttpClientTestingModule],
@@ -133,15 +140,17 @@ describe('LodgingDetailsComponent', () => {
   });
 
   /**
-   * tests the form control
+   * tests constructor values being initalized and if getBookingByAccountId works
    */
-  // it('Submit button', () => {
-  //   spyOn(LodgingDetailsComponent, 'onSubmit');
+  it('GetBookingByAccountId should be called', () => {   
+    spyOn(component, 'getBookingByAccountId');
 
-  //   let button = fixture.debugElement.nativeElement.querySelector('button');
-  //   button.click();
-  //   expect(component.OnSubmit).toHaveBeenCalled();
-  // });
+    expect(component.profile).toBeTruthy();
+    expect(component.Comment).toBeTruthy();
+
+    component.getBookingByAccountId(component.profile.id);
+    expect(component.getBookingByAccountId).toHaveBeenCalled();
+  });
 
   /**
    * tests if the lodge details are returned correctly
