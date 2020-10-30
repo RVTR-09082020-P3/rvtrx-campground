@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
 import { Component, Inject } from '@angular/core';
@@ -10,8 +11,8 @@ import { Payment } from 'data/payment.model';
 import { Profile } from 'data/profile.model';
 import { Review } from 'data/review.model';
 import { stringify } from 'querystring';
-import { from, Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { from, Observable, of, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { AccountService } from 'services/account/account.service';
 import { BookingService } from 'services/booking/booking.service';
 import { GenericEditingService } from 'services/editable/generic-editing.service';
@@ -22,7 +23,7 @@ import { ACCOUNT_EDITING_SERVICE } from '../account-editing.token';
   templateUrl: './account.component.html',
 })
 export class AccountComponent {
-  isAuthenticated$: Observable<boolean>;
+ // isAuthenticated$: Observable<boolean>;
   account$: Observable<Account>;
   address$: Observable<Address>;
   bookings$: Observable<Booking[]>;
@@ -31,8 +32,8 @@ export class AccountComponent {
   reviews$: Observable<Review[]>;
   private readonly id = '-1';
   accountId = this.id;
-//  email : string;
-//  name: string;
+  email : string;
+  name: string;
   
 
 
@@ -43,33 +44,12 @@ export class AccountComponent {
     @Inject(ACCOUNT_EDITING_SERVICE)
     editingService: GenericEditingService<Partial<Account>>
   ) {
-    //this.email = 'beforepromise';
-    //this.name = 'beforepromise';
-    this.isAuthenticated$ = from(this.identity.isAuthenticated());
-    this.identity.getUser().then((res) =>{
-       
-      //  this.email = res.email as string;
-      //  this.name = res.name as string;
-        const builder: Partial<Account> = {};
-        builder.name = res.email as string;
-        builder.email = res.name as string;
-        const account: Account = builder as Account;
-        this.accountService.post(account).subscribe({
-          next: (e) => console.log(e),
-          error: (e) => console.error(e),
-        });
-        
-
-    }).catch((err) => {
-      console.log("failure getting okta auth");
-    });
-
-      
-
-    this.account$ = this.accountService.getEmail("test@Test.com"); 
- 
 
 
+    this.email = this.accountService.getTokenValue("email");
+    this.name = this.accountService.getTokenValue("name");
+    this.account$ = this.accountService.getEmail(this.accountService.getTokenValue("email")).pipe(catchError(this.handleError)); 
+   
     
 
     // TODO: get only the bookings of this account
@@ -103,4 +83,31 @@ export class AccountComponent {
       error: (e) => console.error(e),
     });
   }
+
+  private handleError(error: HttpErrorResponse) {
+    
+    const builder: Partial<Account> = {};
+    builder.name = this.accountService.getTokenValue("name");
+    builder.email = this.accountService.getTokenValue("email");
+    const account: Account = builder as Account;
+    if (error.error instanceof ErrorEvent) {
+      // A client-side or network error occurred. Handle it accordingly.
+      console.error('An error occurred:', error.error.message);
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong.
+      console.error('An error occurred:', error.error.message);
+      this.accountService.post(account);
+      console.log('posting');
+      this.accountService.getEmail(this.accountService.getTokenValue("email"));
+      console.log('getting...');
+      console.error(
+        `Backend returned code ${error.status}, ` +
+        `body was: ${error.error}`);
+    }
+    // Return an observable with a user-facing error message.
+    return throwError(
+      'Something bad happened; please try again later.');
+  
+}
 }
