@@ -5,6 +5,7 @@ import { Observable, of } from 'rxjs';
 import { LodgingService } from 'src/app/services/lodging/lodging.service';
 import { ActivatedRoute } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { bufferWhen } from 'rxjs/operators';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BookingService } from '../../../services/booking/booking.service';
 import { Review } from 'data/review.model';
@@ -130,6 +131,17 @@ describe('LodgingDetailsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  /**
+   * tests the form control
+   */
+  // it('Submit button', () => {
+  //   spyOn(LodgingDetailsComponent, 'onSubmit');
+
+  //   let button = fixture.debugElement.nativeElement.querySelector('button');
+  //   button.click();
+  //   expect(component.OnSubmit).toHaveBeenCalled();
+  // });
 
   /**
    * tests if the lodge details are returned correctly
