@@ -81,7 +81,6 @@ export class AccountService {
    * @param account Account
    */
   post(account: Account): Observable<Account> {
-    console.log("posting..");
     return this.accountsUrl$.pipe(concatMap((url) => this.http.post<Account>(url, account)));
   }
 

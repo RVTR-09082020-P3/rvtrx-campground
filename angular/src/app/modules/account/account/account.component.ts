@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ɵflushModuleScopingQueueAsMuchAsPossible } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { OktaAuthService } from '@okta/okta-angular';
 import { Account } from 'data/account.model';
@@ -48,10 +48,17 @@ export class AccountComponent {
 
     this.email = this.accountService.getTokenValue("email");
     this.name = this.accountService.getTokenValue("name");
-    this.account$ = this.accountService.getEmail(this.accountService.getTokenValue("email")).pipe(catchError(this.handleError)); 
-   
+    const builder: Partial <Account> = {
+       email: "new6@email.com",
+       name: "Name"
     
 
+     };
+     this.account$ = new Observable;
+     const account : Account = builder as Account;
+     this.accountService.post(account).subscribe((val => this.account$ = this.accountService.getEmail(val.email))
+      );
+   // this.account$ = this.accountService.getEmail("new2@email.com")//.pipe(catchError(this.handleError)); 
     // TODO: get only the bookings of this account
     this.bookings$ = this.bookingService.get();
 
@@ -97,10 +104,14 @@ export class AccountComponent {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong.
       console.error('An error occurred:', error.error.message);
-      this.accountService.post(account);
+      this.accountService.post(account).subscribe({
+        next: (e) => console.log(e),
+        error: (e) => console.error(e)
+      });
+      this.accountService.getEmail(builder.email);
       console.log('posting');
-      this.accountService.getEmail(this.accountService.getTokenValue("email"));
-      console.log('getting...');
+  //    this.accountService.getEmail(this.accountService.getTokenValue("email"));
+    //  console.log('getting...');
       console.error(
         `Backend returned code ${error.status}, ` +
         `body was: ${error.error}`);
