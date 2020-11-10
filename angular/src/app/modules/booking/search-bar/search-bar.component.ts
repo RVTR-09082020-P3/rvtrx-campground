@@ -1,9 +1,9 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { forkJoin } from 'rxjs';
-import { BookingService } from 'src/app/services/booking/booking.service';
+import { BookingService } from '../../..//services/booking/booking.service';
 import { Lodging } from '../../../data/lodging.model';
 import { LodgingService } from '../../../services/lodging/lodging.service';
-import { Filter } from 'src/app/data/filter.model';
+import { Filter } from '../../../data/filter.model';
 import {
   FormControl,
   FormGroup,
@@ -87,6 +87,7 @@ export class SearchBarComponent {
     const adults = form.value.adults ? parseInt(form.value.adults, 10) : 0;
     const children = form.value.children ? parseInt(form.value.children, 10) : 0;
     const occupancy = `${adults + children}`;
+    const o = adults + children;
     const city: string = form.value.location;
 
     const checkIn: string = form.value.staydates.checkin;
@@ -98,7 +99,7 @@ export class SearchBarComponent {
     const bookings$ = this.bookingService.getByDateRange(checkIn, checkOut);
 
     forkJoin([lodgings$, bookings$]).subscribe(([lodgings, bookings]) => {
-      const availableLodgings: Lodging[] = lodgings;
+      var availableLodgings: Lodging[] = lodgings;
 
       // Loop through booked dates, check their lodging ids,
       // then loop through the booked rentals to compare
@@ -117,6 +118,15 @@ export class SearchBarComponent {
           }
         }
       }
+      for (let j = 0; j < lodgings.length; j++) {
+        for (let l = 0; l < lodgings[j].rentals.length; l++) {
+          if (lodgings[j].rentals[l].unit.capacity < o) {
+            availableLodgings[j].rentals.splice(l, 1);
+          }
+        }
+      }
+
+
       /* tslint:enable */
 
       let searchResultString = '';
