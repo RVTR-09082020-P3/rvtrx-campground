@@ -40,10 +40,9 @@ export class AccountComponent {
     private readonly toastrService: ToastrService
   ) {
     this.email = '';
-    this.init();
   }
 
-  async init(): Promise<void> {
+  async ngOnInit() : Promise<void> {
     const userClaims = await this.oktaAuth.getUser();
     this.email = userClaims.email as string;
     console.log(this.email);

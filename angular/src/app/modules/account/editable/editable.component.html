@@ -12,8 +12,9 @@
     (focusout)="onFocusOut($event)"
     [pattern]="pattern"
     placeholder="{{ data }}"
+    
   />
-
+  
   <span *ngIf="error" class="icon has-text-danger level-item">
     <i class="fas fa-ban" title="{{ errorMessage }}" aria-hidden="true"></i>
   </span>

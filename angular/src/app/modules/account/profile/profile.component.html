@@ -23,7 +23,6 @@
             <uic-editable
               [(data)]="profile.givenName"
               [(editMode)]="profile.editMode"
-              (dataChange)="edited()"
               type="name"
             >
             <p class="title is-6 level-item">{{ profile.givenName }}</p>
@@ -36,6 +35,7 @@
             >
               <p class="title is-6 level-item">{{ profile.familyName }}</p>
             </uic-editable>
+            
           </div>
         </div>
       </div>

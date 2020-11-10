@@ -48,9 +48,10 @@ export class ProfileComponent {
       familyName: 'New',
       type: 'adult',
       phone: '123-123-1234',
-      editMode: true,
+      editMode : true,
     };
     this.profiles.push(profile);
+   // this.accountService.postProfile(profile).subscribe((p) => console.log(p));
     return true;
   }
 

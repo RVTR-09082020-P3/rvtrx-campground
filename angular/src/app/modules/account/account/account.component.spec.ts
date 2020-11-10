@@ -79,8 +79,8 @@ describe('AccountComponent', () => {
 
   it('should call init() method', (done) => {
     fixture.detectChanges();
-    const spy = spyOn(component, 'init').and.returnValue(Promise.resolve());
-    component.init();
+    const spy = spyOn(component, 'ngOnInit').and.returnValue(Promise.resolve());
+    component.ngOnInit();
     spy.calls.mostRecent().returnValue.then(() => {
       fixture.detectChanges();
       expect(spy.calls.any()).toBe(true);

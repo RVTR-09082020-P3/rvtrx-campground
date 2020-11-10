@@ -41,6 +41,7 @@ export class GenericEditingService<T> {
    */
   payloadEmitter = this.editUpdates.pipe(skip(1));
 
+  
   /**
    * Call this to push updated state to payload
    */

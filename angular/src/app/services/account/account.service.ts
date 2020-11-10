@@ -81,6 +81,12 @@ export class AccountService {
     return this.accountsUrl$.pipe(concatMap((url1) => this.http.put<Account>(url1, account)));
   }
 
+  postProfile(profile: Profile): Observable<Profile> {
+    return this.profilesUrl$.pipe(concatMap((url1) => this.http.post<Profile>(url1, profile)));
+  }
+  putProfile(profile: Profile): Observable<Account> {
+    return this.profilesUrl$.pipe(concatMap((url1) => this.http.put<Account>(url1, profile)));
+  }
   /**
    *
    * @param payment
